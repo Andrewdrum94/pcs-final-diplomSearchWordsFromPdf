@@ -27,8 +27,9 @@ public class BooleanSearchEngine implements SearchEngine {
                 }
                 for (Map.Entry<String, Integer> freq : freqs.entrySet()) {
                     if (index.containsKey(freq.getKey())) {//если в мапе есть такой ключ, обновляем список PageEntry
-                        List<PageEntry> uploaded = new ArrayList<>(index.get(freq.getKey()));
-                        uploaded.add(new PageEntry(pdfFile.getName(), (i + 1), freq.getValue()));
+                        List<PageEntry> uploaded = new ArrayList<>(index.get(freq.getKey()));//создаём новый список и кладём в него список из мапы, ищем по ключу.
+                        uploaded.add(new PageEntry(pdfFile.getName(), (i + 1), freq.getValue()));//добавляем новую страницу
+                        Collections.sort(uploaded);//Сортируем список
                         index.put(freq.getKey(), uploaded);
                     } else {
                         List<PageEntry> list = new ArrayList<>();
@@ -46,8 +47,6 @@ public class BooleanSearchEngine implements SearchEngine {
         // тут реализуйте поиск по слову
         String lowerCaseWord = word.toLowerCase(Locale.ROOT);
         if (!(index.containsKey(lowerCaseWord))) return Collections.emptyList();
-        List<PageEntry> sorted = new ArrayList<>(index.get(lowerCaseWord));
-        Collections.sort(sorted);
-        return sorted;
+        return index.get(lowerCaseWord);
     }
 }
